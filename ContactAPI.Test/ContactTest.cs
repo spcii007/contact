@@ -10,7 +10,7 @@ namespace ContactAPI.Test
         [Fact]
         void ContactInsert_IsValid()
         {
-
+            Assert.Empty("");
         }
     }
 }

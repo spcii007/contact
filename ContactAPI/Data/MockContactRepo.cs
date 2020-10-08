@@ -8,10 +8,6 @@ namespace ContactAPI.Data
 {
     public class MockContactRepo : IPersonRepository
     {
-       
-
-        
-        
         public IEnumerable<Person> GetPeople()
         {
             var persons = new List<Person>
@@ -67,6 +63,11 @@ namespace ContactAPI.Data
         }
 
         public void CreatePerson(Person person)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool PersonExist(Person person)
         {
             throw new NotImplementedException();
         }

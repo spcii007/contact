@@ -38,7 +38,7 @@ namespace Controllers
             
             if (person == null)
                 return StatusCode(400, "Bad argument exception");
-            if (_db.PersonExist(person)
+            if (_db.PersonExist(person))
                 return StatusCode(401, "Person already exit."); 
 
             _db.CreatePerson(person);
