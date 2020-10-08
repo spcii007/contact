@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ContactAPI.Models;
 
 namespace ContactAPI.Models
 {
@@ -12,8 +8,14 @@ namespace ContactAPI.Models
         public DataContext(DbContextOptions<DataContext> options):base(options)
         {}
 
-        public DbSet<Person> People { set; get; }
+        public DbSet<Person> Person { set; get; }
         public DbSet<Phone> Phones { get; set; }
+
+        public DbSet<Address> Addresses { get; set; }
+
+        public DbSet <Name> Names { get; set; }
+
+
 
     }
 }

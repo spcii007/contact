@@ -20,4 +20,6 @@ public class Address {
   [MaxLength (5)]
   public string zip { get; set; }
 
+  public int PersonId { get; set; }
+
 }

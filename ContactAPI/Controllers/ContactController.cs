@@ -1,55 +1,51 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using ContactAPI.Data;
+using ContactAPI.Models;
 using Microsoft.AspNetCore.Mvc;
-using Models;
+using System.Collections.Generic;
 
-namespace Controllers {
+namespace Controllers
+{
     [Route ("api/contact")]
     [ApiController]
     public class ContactController : ControllerBase {
+        private readonly IPersonRepository _db;
+
+        public ContactController(IPersonRepository db)
+        {
+            _db = db;
+        }
+        
+        
         [HttpGet]
         public ActionResult<IEnumerable<Person>> Get () {
 
-            var persons = new Person[] {
-                new Person {
+            var persons = _db.GetPeople();
 
-                Name = new Name {
-                first = "Pablo",
-                middle = "Andres",
-                last = "Cifuentes",
-                Id = 1,
+            return Ok(persons);
+        }
 
-                },
-                Address = new Address {
-                street = "123 Main St",
-                city = "Bedford",
-                state = "Virginia",
-                zip = "24556",
-                Id = 1
+        [HttpGet ("{id}")]
+        public ActionResult<Person> Get(int id)
+        {
+            var person = _db.SelectPersonbyId(id);
 
-                },
-                Phone = new Phone[] {
-                new Phone { number = "555-555-5555", Id = 1, phoneType = phonetype.mobile },
-                new Phone { number = "555-555-5544", Id = 2, phoneType = phonetype.work },
-                new Phone { number = "555-444-4444", Id = 3, phoneType = phonetype.home }
-
-                },
-                Email = "spcii@hotmail.com"
-                }
-
-            };
-
-            return Ok (persons);
+            return Ok(person);
         }
 
         [HttpPost]
         public IActionResult InsertPerson (Person person)
         {
             
-            
-            
-            return StatusCode(201);
+            if (person == null)
+                return StatusCode(400, "Bad argument exception");
+            if (_db.PersonExist(person)
+                return StatusCode(401, "Person already exit."); 
 
+            _db.CreatePerson(person);
+            if (_db.SaveChanges())
+                return CreatedAtRoute(nameof(InsertPerson), new { id = person.Id, person });
+            else
+                return StatusCode(400, "Bad argument exception");
         }
 
     }

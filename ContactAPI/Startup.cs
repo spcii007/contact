@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Configuration;
+using ContactAPI.Data;
 
 namespace ContactAPI {
     public class Startup {
@@ -27,6 +28,7 @@ namespace ContactAPI {
             services.AddDbContext<DataContext>(x => x.UseSqlite(Config.GetConnectionString("DefaultConnection")));
             services.AddControllers().AddNewtonsoftJson();
             services.AddMvc ( options => options.EnableEndpointRouting = false);
+            services.AddScoped<IPersonRepository, SQLLiteContactRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

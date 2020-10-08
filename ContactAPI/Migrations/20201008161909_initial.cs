@@ -7,7 +7,20 @@ namespace ContactAPI.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Address",
+                name: "Person",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Email = table.Column<string>(maxLength: 100, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Person", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Addresses",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -15,53 +28,40 @@ namespace ContactAPI.Migrations
                     street = table.Column<string>(maxLength: 250, nullable: false),
                     city = table.Column<string>(maxLength: 100, nullable: false),
                     state = table.Column<string>(maxLength: 80, nullable: false),
-                    zip = table.Column<string>(maxLength: 5, nullable: true)
+                    zip = table.Column<string>(maxLength: 5, nullable: true),
+                    PersonId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Address", x => x.Id);
+                    table.PrimaryKey("PK_Addresses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Addresses_Person_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "Person",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Name",
+                name: "Names",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     first = table.Column<string>(maxLength: 100, nullable: false),
                     middle = table.Column<string>(maxLength: 100, nullable: true),
-                    last = table.Column<string>(maxLength: 100, nullable: true)
+                    last = table.Column<string>(maxLength: 100, nullable: true),
+                    PersonId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Name", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "People",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    NameId = table.Column<int>(nullable: true),
-                    AddressId = table.Column<int>(nullable: true),
-                    Email = table.Column<string>(maxLength: 100, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_People", x => x.Id);
+                    table.PrimaryKey("PK_Names", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_People_Address_AddressId",
-                        column: x => x.AddressId,
-                        principalTable: "Address",
+                        name: "FK_Names_Person_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "Person",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_People_Name_NameId",
-                        column: x => x.NameId,
-                        principalTable: "Name",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -72,28 +72,30 @@ namespace ContactAPI.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     number = table.Column<string>(maxLength: 15, nullable: false),
                     phoneType = table.Column<int>(nullable: false),
-                    PersonId = table.Column<int>(nullable: true)
+                    PersonId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Phones", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Phones_People_PersonId",
+                        name: "FK_Phones_Person_PersonId",
                         column: x => x.PersonId,
-                        principalTable: "People",
+                        principalTable: "Person",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_People_AddressId",
-                table: "People",
-                column: "AddressId");
+                name: "IX_Addresses_PersonId",
+                table: "Addresses",
+                column: "PersonId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_People_NameId",
-                table: "People",
-                column: "NameId");
+                name: "IX_Names_PersonId",
+                table: "Names",
+                column: "PersonId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Phones_PersonId",
@@ -104,16 +106,16 @@ namespace ContactAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Addresses");
+
+            migrationBuilder.DropTable(
+                name: "Names");
+
+            migrationBuilder.DropTable(
                 name: "Phones");
 
             migrationBuilder.DropTable(
-                name: "People");
-
-            migrationBuilder.DropTable(
-                name: "Address");
-
-            migrationBuilder.DropTable(
-                name: "Name");
+                name: "Person");
         }
     }
 }

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Models {
+namespace ContactAPI.Models {
     public class Name {
         [Key]
         public int Id { get; set; }
@@ -11,5 +11,7 @@ namespace Models {
         public string middle { get; set; }
         [MaxLength(100)]
         public string last { get; set; }
+
+        public int PersonId { get; set; }
     }
 }
