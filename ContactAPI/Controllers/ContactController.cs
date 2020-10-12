@@ -8,13 +8,14 @@ namespace Controllers
     [Route ("api/contact")]
     [ApiController]
     public class ContactController : ControllerBase {
+
         private readonly IPersonRepository _db;
 
         public ContactController(IPersonRepository db)
         {
             _db = db;
         }
-        
+    
         
         [HttpGet]
         public ActionResult<IEnumerable<Person>> Get () {
@@ -38,12 +39,16 @@ namespace Controllers
             
             if (person == null)
                 return StatusCode(400, "Bad argument exception");
-            if (_db.PersonExist(person))
+
+            var pExits = _db.PersonExist(person);
+
+
+            if (pExits.Result)
                 return StatusCode(401, "Person already exit."); 
 
             _db.CreatePerson(person);
             if (_db.SaveChanges())
-                return CreatedAtRoute(nameof(InsertPerson), new { id = person.Id, person });
+                return CreatedAtRoute(nameof(InsertPerson), person );
             else
                 return StatusCode(400, "Bad argument exception");
         }

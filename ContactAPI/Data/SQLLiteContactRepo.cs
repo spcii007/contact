@@ -16,14 +16,14 @@ namespace ContactAPI.Data
             _data = data;
         }
         
-        public void CreatePerson(Person person)
+        public async Task CreatePerson(Person person)
         {
             if(person == null)
             {
                 throw new ArgumentNullException();
             }
 
-            _data.Add(person);
+            await _data.AddAsync(person);
         }
 
         public async Task DeletePerson(int id)
@@ -35,18 +35,23 @@ namespace ContactAPI.Data
             }
         }
 
-        public IEnumerable<Person> GetPeople()
+        public Task<List<Person>> GetPeople()
         {
-            return _data.Person
+            
+            var people = _data.Person
                     .Include(ad => ad.Address)
                     .Include(ad => ad.Name)
                     .Include(ad => ad.Phone)
-                    .ToList();
+                    .ToListAsync();
+
+            return people;
         }
 
-        public bool PersonExist(Person person)
+        public async Task <bool> PersonExist(Person person)
         {
-            return _data.Person.Any(p => p.Email == person.Email);
+            var result =  await _data.Person.AnyAsync(p => p.Email == person.Email);
+
+            return result;
         }
 
         public bool SaveChanges()
@@ -74,5 +79,7 @@ namespace ContactAPI.Data
         {
             throw new NotImplementedException();
         }
+
+      
     }
 }

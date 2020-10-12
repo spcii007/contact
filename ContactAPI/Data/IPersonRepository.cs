@@ -8,15 +8,15 @@ namespace ContactAPI.Data
 {
     public interface IPersonRepository
     {
-        IEnumerable<Person> GetPeople ();
+        Task<List<Person>> GetPeople ();
         Task<Person> SelectPersonbyId(int id);
         Task<Person> UpdatePerson(int id, Person newPerson);
         bool SaveChanges();
         Task DeletePerson(int id);
 
-        void CreatePerson(Person person);
+        Task CreatePerson(Person person);
 
-        bool PersonExist(Person person);
+        Task<bool> PersonExist(Person person);
      
     }
 }

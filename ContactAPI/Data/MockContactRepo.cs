@@ -8,11 +8,41 @@ namespace ContactAPI.Data
 {
     public class MockContactRepo : IPersonRepository
     {
-        public IEnumerable<Person> GetPeople()
+        
+        public bool SaveChanges()
         {
-            var persons = new List<Person>
-            { 
-            
+            throw new NotImplementedException();
+        }
+
+        public Task<Person> SelectPersonbyId(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Person> UpdatePerson(int id, Person newPerson)
+        {
+            throw new NotImplementedException();
+        }
+        public Task DeletePerson(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async  Task CreatePerson(Person person)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task< bool> PersonExist(Person person)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Person>>  GetPeople()
+        {
+            var people = new List<Person>
+            {
+
                 new Person {
 
                 Name = new Name {
@@ -40,36 +70,8 @@ namespace ContactAPI.Data
                 }
 
             };
-            return persons;
+            return Task.Run(() => people);
         }
 
-        public bool SaveChanges()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Person> SelectPersonbyId(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Person> UpdatePerson(int id, Person newPerson)
-        {
-            throw new NotImplementedException();
-        }
-        public Task DeletePerson(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CreatePerson(Person person)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool PersonExist(Person person)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
